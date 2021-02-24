@@ -31,15 +31,15 @@
                     <Button type="primary" icon="ios-skip-forward" @click="countAdd">隐藏数据列</Button>
                     <br>
                     <br>
-                    <Tabs type="card" :value="currentTab" @on-click="cur" name="base">
+                    <Tabs type="card" :value="currentTab" @on-click="cur" @on-tab-remove="removetab" name="base">
                         <TabPane v-for="tab in tabs" :key="tab" :label="'查询' + tab" :name="'查询' + tab"
-                                 icon="logo-buffer" tab="base">
+                                 icon="logo-buffer" tab="base" closable >
                             <tabQuery :word-list="wordList" :export_data="latch.explore" :dataBase="addr.base"
                                       :source="source"
                                       :table="addr.table"></tabQuery>
                         </TabPane>
                         <Button @click="handleTabsAdd" size="small" slot="extra">增加窗口</Button>
-                        <Button @click="handleTabRemove" size="small" slot="extra" class="margin-left-10">减少窗口</Button>
+                       
                     </Tabs>
                 </Card>
             </Col>
@@ -144,7 +144,7 @@ export default class query_sql extends Mixins(fetch_mixin, order_mixin) {
         base: '',
         table: ''
     };
-    private tabs = 1;
+    private tabs = [1];
     private test_sql = '';
 
     @Prop({
@@ -191,8 +191,33 @@ export default class query_sql extends Mixins(fetch_mixin, order_mixin) {
         }
     }
 
+    removetab( name:any ){
+        console.log('tabs.length',this.tabs.length)
+        console.log('name is',name)
+        console.log('name.slice(2)：',name.slice(2))
+        this.tv = this.tabs.indexOf(Number(name.slice(2)));
+        console.log('first index is:',this.tv);
+
+        const index = this.tabs.indexOf(Number(name.slice(2)));
+        this.tabs.splice(index, 1);
+        
+         
+        
+        console.log('tabs is:',this.tabs);
+
+    }
+    
     handleTabsAdd() {
-        this.tabs++
+  
+         if (this.tabs.length) {
+            this.tabs.push(this.tabs[this.tabs.length - 1] + 1);
+            this.currentTab = `查询${this.tabs[this.tabs.length -1]}`
+            console.log('after push tabs is',this.tabs[this.tabs.length -1])
+           } else {
+             this.tabs.push(1);
+             this.currentTab =  `查询${this.tabs.length}`
+             console.log('currentTab',this.currentTab)
+             }
     }
 
     testSql() {
