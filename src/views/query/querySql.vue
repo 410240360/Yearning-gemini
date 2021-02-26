@@ -192,19 +192,8 @@ export default class query_sql extends Mixins(fetch_mixin, order_mixin) {
     }
 
     removetab( name:any ){
-        console.log('tabs.length',this.tabs.length)
-        console.log('name is',name)
-        console.log('name.slice(2)：',name.slice(2))
-        this.tv = this.tabs.indexOf(Number(name.slice(2)));
-        console.log('first index is:',this.tv);
-
         const index = this.tabs.indexOf(Number(name.slice(2)));
         this.tabs.splice(index, 1);
-        
-         
-        
-        console.log('tabs is:',this.tabs);
-
     }
     
     handleTabsAdd() {
@@ -216,7 +205,6 @@ export default class query_sql extends Mixins(fetch_mixin, order_mixin) {
            } else {
              this.tabs.push(1);
              this.currentTab =  `查询${this.tabs.length}`
-             console.log('currentTab',this.currentTab)
              }
     }
 
